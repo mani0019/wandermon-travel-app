@@ -1,0 +1,84 @@
+<style>
+  /* Search button style */
+  .search-bar {
+    border-color: gray;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+  }
+  .search-btn {
+    border-radius: 50px;
+    background-color: gray;
+    border-color: gray;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  .search-btn:hover {
+    background-color: darkgray;
+    border-color: darkgray;
+  }
+
+  /* Search input style */
+  .search-input {
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
+    transition: box-shadow 0.3s;
+  }
+  .search-input:focus {
+    box-shadow: 0 0 5px gray;
+    outline: none;
+  }
+
+  /* Ensure search form doesn't shrink on small screens */
+  @media (max-width: 768px) {
+    .navbar .mx-auto {
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+    .navbar .d-flex {
+      width: 100%;
+    }
+    .search-input {
+      flex: 1;
+    }
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg bg-body-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/home"><i class="fa-solid fa-dragon"></i></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <!-- Left side links -->
+      <div class="navbar-nav">
+        <a class="nav-link" href="/listings">Explore</a>
+      </div>
+
+      <!-- Centered search form -->
+      <div class="mx-auto">
+        <form class="d-flex" role="search">
+          <input class="search-bar form-control me-2" type="search" placeholder="Search your Destination" aria-label="Search">
+          
+          <button class="btn search-btn d-flex align-items-center" type="submit">
+           <i class="fa-solid fa-magnifying-glass"></i>
+            Search</button>
+        </form>
+      </div>
+
+      <!-- Right side links -->
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link" href="/listings/new">wandermon your place</a>
+        <% if(!currUser) { %>
+          <a class="nav-link active" aria-current="page" href="/signup"><b>signup</b></a>
+          <a class="nav-link" href="/login"><b>login</b></a>
+        <% } else { %>
+          <a class="nav-link" href="/logout"><b>logout</b></a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</nav>

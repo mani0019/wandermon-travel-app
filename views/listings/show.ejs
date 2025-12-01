@@ -1,0 +1,134 @@
+<% layout('layouts/boilerplate') %>
+<div class="row mt-4 " >
+  <div class="col-8 offset-2">
+     <h3>Listing Details</h3>
+  </div>
+
+  <div class="card col-6 offset-2">
+    <img src="<%=listing.image.url %>" class="card-img-top" alt="listing_image" style="height: 30rem; object-fit: cover; border-radius: 0.5rem; margin-top:15px;">
+    <div class="card-body">
+      <p class="card-text"> 
+        <li style="list-style:none;"><b><%= listing.title %></b></li>
+        <p><i>Owned by : <%= listing.owner.username %></i></p>
+        <li><%= listing.description %></li>
+        <li>$ <%= listing.price.toLocaleString("en-IN") %></li>
+        <li><%= listing.location %></li>
+        <li><%= listing.country %></li>
+      </p>
+
+      <!-- Buttons at bottom of card -->
+     <% if(currUser && listing.owner && currUser._id.equals(listing.owner._id)) { %>
+  <div class="listing-actions" style="display: flex; gap: 10px; margin-top: 15px;">
+    <a href="/listings/<%= listing._id %>/edit" class="btn btn-edit btn btn-dark">Edit</a>
+
+    <form action="/listings/<%=listing._id%>?_method=DELETE" method="POST" class="delete-form">
+      <button type="submit" class="btn btn-delete btn btn-dark">Delete</button>
+    </form>
+  </div>
+<% } %>
+
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- reveiw page  -->
+   <div class="col-8 offset-2">
+  <hr>
+  <% if(currUser) { %>
+  <h4>Leave a Review</h4>
+
+  <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation">
+
+    <div class="mb-3">
+   <label for="rating" class="form-label">Rating</label>
+  <fieldset class="starability-basic">
+    
+  
+  <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
+  <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+  <label for="first-rate1" title="Terrible">1 star</label>
+  <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+  <label for="first-rate2" title="Not good">2 stars</label>
+  <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+  <label for="first-rate3" title="Average">3 stars</label>
+  <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+  <label for="first-rate4" title="Very good">4 stars</label>
+  <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+  <label for="first-rate5" title="Amazing">5 stars</label>
+</fieldset>
+    </div>
+
+    <div>
+      <label for="comment" class="form-label">Add Comment</label>
+      <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control" required></textarea>
+      <div class="invalid-feedback"> pls add some commment bitch</div>
+    </div>
+
+    <button class="btn btn-dark mt-4"  type="submit">Submit</button>
+
+  </form>
+    <% }%>
+
+  <h3 class="mt-4 mb-3">All reviews</h3>
+  <div class="row">
+  <% for(let review of listing.reviews){%>
+
+    <div class="card col-5 mb-3 ms-3">
+      <div class="card-body">
+      <h5 class="card-title"><%= review.author.username %></h5>
+      <p class="starability-result" data-rating="<%= review.rating %>">
+    Rated: <%= review.rating %> stars
+  </p>
+      <p class="card-text"><%= review.comment%></p>     
+      
+      
+      <div>
+        <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+  <button class="btn btn-dark">Delete</button>
+</form>
+
+      </div>
+      </div>
+    
+      
+      
+      
+
+    </div>
+  
+
+  
+  
+
+</div>
+</div>
+<% } %>
+<div class="">
+  <h4>where you will be !</h4>
+  <div id="map"></div>
+  <script>
+    // 1️⃣ Initialize map (center → London)
+    var map = L.map('map').setView([51.505, -0.09], 13);
+
+    // 2️⃣ Add OpenStreetMap tiles
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // 3️⃣ Add a marker
+    var marker = L.marker([51.5, -0.09]).addTo(map);
+
+    // 4️⃣ Add popup on marker
+    marker.bindPopup("<b>view exact location</b><br>After.");
+
+    // 5️⃣ Show popup automatically
+    marker.openPopup();
+</script>
+
+</div>
+
+<script src="/public/js/validate.js"></script>
+
